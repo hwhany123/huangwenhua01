@@ -1,8 +1,10 @@
 <template>
 
     <BlogHeader/>
-
-    <div v-if="article !== null" class="grid-container">
+    <el-container>
+      <el-aside><Cbl/></el-aside>
+      <el-main  width="800px">
+        <div v-if="article !== null" class="grid-container">
         <div>
             <h1 id="title">{{ article.title }}</h1>
             <p id="subtitle">
@@ -21,6 +23,10 @@
 
     <Comments :article="article" />
 
+      </el-main>
+    </el-container>
+
+
     <BlogFooter/>
 
 </template>
@@ -29,13 +35,14 @@
     import BlogHeader from '@/components/BlogHeader.vue'
     import BlogFooter from '@/components/BlogFooter.vue'
     import Comments from '@/components/Comments.vue'
+    import Cbl from '@/components/Cbl.vue'
 
     import axios from 'axios';
 
 
     export default {
         name: 'ArticleDetail',
-        components: {BlogHeader, BlogFooter, Comments},
+        components: {BlogHeader, BlogFooter, Comments,Cbl},
         data: function () {
             return {
                 article: null

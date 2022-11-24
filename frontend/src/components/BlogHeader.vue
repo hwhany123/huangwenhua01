@@ -2,7 +2,7 @@
     <div id="header">
         <div class="grid">
             <div></div>
-            <h1>My Drf-Vue Blog</h1>
+            <a href="/"> <h1>My Drf-Vue Blog</h1></a>
             <!--引入搜索框组件-->
             <SearchButton/>
         </div>

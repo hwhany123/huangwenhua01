@@ -31,9 +31,9 @@ ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend/dist/"),
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
+
+    #os.path.join(BASE_DIR, "frontend/dist/"),
 
 
 # Application definition

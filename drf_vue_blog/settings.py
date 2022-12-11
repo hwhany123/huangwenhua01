@@ -34,6 +34,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static_static')
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend/dist/"),
                     os.path.join(BASE_DIR, "static/admin/"),
+                    os.path.join(BASE_DIR, "vue-admin-template/dist/"),
                     ]
 
     #os.path.join(BASE_DIR, "frontend/dist/"),

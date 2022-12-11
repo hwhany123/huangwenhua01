@@ -6,3 +6,4 @@ git submodule update
 git add .
 git commit -m "v提交"
 git push -u origin main
+git clone git@github:hwhany123/huangwenhua01.git --recursive

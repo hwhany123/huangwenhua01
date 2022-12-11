@@ -1,4 +1,8 @@
 git submodule add git@github.com:hwhany123/vue-admin-template.git vue-admin-template 添加子模块
 git rm --cached vue-admin-template #If you added this path by mistake, you can remove it
+git clone "url" --recursive 克隆包含子模块
 git submodule init 
 git submodule update 
+git add .
+git commit -m "v提交"
+git push -u origin main

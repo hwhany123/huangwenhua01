@@ -35,6 +35,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static_static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend/dist/"),
                     os.path.join(BASE_DIR, "static/admin/"),
                     os.path.join(BASE_DIR, "vue-admin-template/dist/"),
+                    os.path.join(BASE_DIR, "vue-admin-template/dist/static"),
                     ]
 
     #os.path.join(BASE_DIR, "frontend/dist/"),
@@ -158,5 +159,5 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-MEDIA_URL =  '/media/'
+MEDIA_URL =  'http://127.0.0.1:8081/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

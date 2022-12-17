@@ -1,3 +1,6 @@
 [submodule "vue-admin-template"]
 	path = vue-admin-template
 	url = git@github.com:hwhany123/vue-admin-template.git
+[submodule "vant-demo"]
+	path = vant-demo
+	url = git@github.com:hwhany123/vant-demo.git

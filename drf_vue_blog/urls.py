@@ -18,6 +18,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 from article import views
+from store import views as views_store
 from comment.views import CommentViewSet
 
 from django.conf import settings
@@ -32,6 +33,7 @@ from user_info.views import UserViewSet
 
 router = DefaultRouter()
 router.register(r'article', views.ArticleViewSet)
+router.register(r'store', views_store.StoreViewSet)
 router.register(r'category', views.CategoryViewSet)
 router.register(r'tag', views.TagViewSet)
 router.register(r'avatar', views.AvatarViewSet)

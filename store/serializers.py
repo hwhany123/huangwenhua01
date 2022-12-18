@@ -50,6 +50,7 @@ class StoreCategoryDetailSerializer(serializers.ModelSerializer):
         fields = [
             'url',
             'title',
+
         ]
 
 

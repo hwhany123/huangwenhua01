@@ -68,6 +68,11 @@ class Store(models.Model):
     )
     # 标题
     title = models.CharField(max_length=100)
+    specification=models.CharField(max_length=100)
+    cost=models.FloatField()
+    price=models.FloatField()
+    discount=models.FloatField()
+    count = models.IntegerField()
     # 正文
     body = models.TextField()
     # 创建时间

@@ -7,6 +7,10 @@ git submodule init
 git submodule update 
 git add .
 git commit -m "关键字"
+git branch 查看分支
+git branch -d "分支名" 删除分支
+git checkout “分支名” 转换到分支“分支名”
+git checkout -b “分支名”  新建并转换到新分支“分支名”
 git push -u origin main
 git clone git@github.com:hwhany123/huangwenhua01.git --recursive
 git clone git@github.com:hwhany123/vant-demo.git

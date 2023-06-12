@@ -53,6 +53,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'article',
+    'article_bx',
+    'article_xsz',
     'user_info',
     'comment',
     'store',
@@ -95,8 +97,13 @@ WSGI_APPLICATION = 'drf_vue_blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "myxsz",
+        "USER": "root",
+        "PASSWORD": "Hwh253922804*",
+        "HOST": "localhost",
+        "PORT": "3306",
+        "options":{"charset":"utf8mb4","collation":"utf8mb4_unicode_ci"},
     }
 }
 

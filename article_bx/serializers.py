@@ -1,11 +1,12 @@
 from rest_framework import serializers
 from article_bx.models import bx_clbx
-
 from user_info.serializers import UserDescSerializer
 
 
 
-from comment.serializers import CommentSerializer
+
+
+
 
 class ArticleBaseSerializer(serializers.HyperlinkedModelSerializer):
     """
@@ -13,6 +14,7 @@ class ArticleBaseSerializer(serializers.HyperlinkedModelSerializer):
     """
     id = serializers.IntegerField(read_only=True)
     author = UserDescSerializer(read_only=True)
+
 
     # 自定义错误信息
     default_error_messages = {
@@ -39,7 +41,7 @@ class ArticleSerializer(ArticleBaseSerializer):
 class ArticleDetailSerializer(ArticleBaseSerializer):
     id = serializers.IntegerField(read_only=True)
 
-    comments = CommentSerializer(many=True, read_only=True)
+
 
 
 

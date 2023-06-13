@@ -102,7 +102,7 @@ DATABASES = {
         "USER": "root",
         "PASSWORD": "",
         "HOST": "localhost",
-        "PORT": "3306",
+        "PORT": "33061",
         "options":{"charset":"utf8mb4","collation":"utf8mb4_unicode_ci"},
     }
 }

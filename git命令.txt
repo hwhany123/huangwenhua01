@@ -5,8 +5,14 @@ git rm --cached vue-admin-template #If you added this path by mistake, you can r
 git clone "url" --recursive 克隆包含子模块
 git submodule init 
 git submodule update 
+
+
 git add .
 git commit -m "关键字"
+git push -u origin main
+
+
+
 git branch 查看分支
 git branch -d "分支名" 删除分支
 git checkout “分支名” 转换到分支“分支名”

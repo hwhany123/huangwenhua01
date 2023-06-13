@@ -1,7 +1,14 @@
 from django.db import models
 from django.db.models import JSONField
+from django.contrib.auth.models import User
 
 class bx_clbx(models.Model):
+    author = models.ForeignKey(
+        User,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='articles_bx'
+    )
     id = models.AutoField(primary_key=True)
 
     报销人= models.CharField(max_length=255, blank=True, null=True)

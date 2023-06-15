@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-1(gw4h!_=o2@@-3-p9jj62y=9k#*^3(5*!i-$yhblsckxw!=1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 STATIC_URL = '/static/'
@@ -102,7 +102,7 @@ DATABASES = {
         "USER": "root",
         "PASSWORD": "",
         "HOST": "localhost",
-        "PORT": "33061",
+        "PORT": "3306",
         "options":{"charset":"utf8mb4","collation":"utf8mb4_unicode_ci"},
     }
 }

@@ -1,10 +1,14 @@
+import datetime
 
 from article_xsz.models import xszst
 
 from article_xsz.permissions import IsAdminUserOrReadOnly
 from rest_framework import viewsets
-from article_xsz.serializers import ArticleSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
+from article_xsz.serializers import ArticleSerializer
+from django_pandas.io import read_frame
 from rest_framework import filters
 
 
@@ -35,6 +39,51 @@ class ArticleViewSet(viewsets.ModelViewSet):
             return ArticleSerializer
         else:
             return ArticleDetailSerializer
+
+class PivoltTableView(APIView):
+    def get(self,request):
+
+        begin=self.request.query_params.get('begin')
+        print(begin)
+
+        if begin:
+            begin = int(begin)
+        else:
+            begin =int(1)
+        end = self.request.query_params.get('end')
+        if end:
+            end = int(end)
+        else:
+            end = int(datetime.datetime.today().month)
+
+        print(begin,end)
+
+
+
+
+        queryset = xszst.objects.filter(科目名称__contains='行政费用').exclude(科目名称__contains='研发支出')
+        df=read_frame(queryset)
+
+        df['费用'] = df['费用'].str.extract(r'/(.*)$')
+        df['费用'] = df['费用'].str.replace(r'-.*','')
+        #df=df[(df['借方']>0)+(df['借方']<0)]
+        df=df[(df['月']>=begin)*(df['月']<=end)]
+        pivolt_table=df.pivot_table(
+            index=['费用'],
+            columns='年',
+
+            values='借方',
+            aggfunc='sum',
+        )
+        pivolt_data=pivolt_table.reset_index().fillna(0)
+
+
+
+
+        pivolt_data =pivolt_data.to_dict(orient='records')
+
+        return Response(pivolt_data)
+
 
     # filterset_fields = ['author__username', 'title']
 

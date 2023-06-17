@@ -36,6 +36,7 @@ from user_info.views import UserViewSet
 router = DefaultRouter()
 router.register(r'article', views.ArticleViewSet)
 router.register(r'article_xsz', views_xsz.ArticleViewSet)
+#router.register(r'article_pivolt',views_xsz.PivoltTableView)
 router.register(r'article_bx', views_bx.ArticleViewSet)
 router.register(r'store', views_store.StoreViewSet)
 router.register(r'category', views.CategoryViewSet)
@@ -53,6 +54,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     # drf 默认路由器自动注册
     path('api/', include(router.urls)),
+    path('api/article_xsz_pivolt', include('article_xsz.urls',namespace='article_xsz_pivolt')),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

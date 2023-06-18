@@ -41,6 +41,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             return ArticleDetailSerializer
 
 class PivoltTableView(APIView):
+    permission_classes = [IsAdminUserOrReadOnly]
     def get(self,request):
 
         begin=self.request.query_params.get('begin')
@@ -85,6 +86,7 @@ class PivoltTableView(APIView):
         return Response(pivolt_data)
 
 class PivoltTableView_aqfy(APIView):
+        permission_classes = [IsAdminUserOrReadOnly]
         def get(self, request):
 
             begin = self.request.query_params.get('begin')

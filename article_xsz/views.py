@@ -65,7 +65,7 @@ class PivoltTableView(APIView):
         df=read_frame(queryset)
 
         df['费用'] = df['费用'].str.extract(r'/(.*)$')
-        df['费用'] = df['费用'].str.replace(r'-.*','')
+        df['费用'] = df['费用'].str.replace(r'-.*','',regex=True)
         #df=df[(df['借方']>0)+(df['借方']<0)]
         df=df[(df['月']>=begin)*(df['月']<=end)]
         pivolt_table=df.pivot_table(
@@ -84,6 +84,62 @@ class PivoltTableView(APIView):
 
         return Response(pivolt_data)
 
+class PivoltTableView_aqfy(APIView):
+        def get(self, request):
+
+            begin = self.request.query_params.get('begin')
+            print(begin)
+
+            if begin:
+                begin = int(begin)
+            else:
+                begin = int(1)
+            end = self.request.query_params.get('end')
+            if end:
+                end = int(end)
+            else:
+                end = int(datetime.datetime.today().month)
+
+            print(begin, end)
+
+            queryset = xszst.objects.filter(科目名称__contains='专项储备')
+            df = read_frame(queryset)
+
+            #本月
+            dfby = df[(df['年'] == 2023) * (df['月'] == end)]
+
+
+            #累计
+            df = df[(df['月'] >= begin) * (df['月'] <= end)]
+            pivolt_table = df.pivot_table(
+                index=['安全环保投入类型'],
+                columns='年',
+
+                values='借方',
+                aggfunc='sum',
+            )
+            #累计透视表
+            pivolt_data = pivolt_table.reset_index().fillna(0)
+            #本月透视表
+            pivolt_table_by = dfby.pivot_table(
+                index=['安全环保投入类型'],
+
+
+                values='借方',
+                aggfunc='sum',
+            )
+            pivolt_data_by = pivolt_table_by.reset_index().fillna(0)
+            print(pivolt_data_by)
+
+            pivolt_data=pivolt_data.join(other=pivolt_data_by,how='left',lsuffix='',rsuffix='_R').fillna(0)
+            print(pivolt_data)
+
+            pivolt_data=pivolt_data.rename(columns={"借方":str(end)}).drop('安全环保投入类型_R',axis=1)
+
+
+            pivolt_data = pivolt_data.to_dict(orient='records')
+
+            return Response(pivolt_data)
 
     # filterset_fields = ['author__username', 'title']
 

@@ -54,7 +54,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     # drf 默认路由器自动注册
     path('api/', include(router.urls)),
-    path('api/article_xsz_pivolt', include('article_xsz.urls',namespace='article_xsz_pivolt')),
+    path('api/article_xsz_pivolt/', include('article_xsz.urls',namespace='article_xsz_pivolt')),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

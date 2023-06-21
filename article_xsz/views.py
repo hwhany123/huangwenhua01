@@ -104,7 +104,7 @@ class PivoltTableView_aqfy(APIView):
 
             print(begin, end)
 
-            queryset = xszst.objects.filter(科目名称__contains='专项储备')
+            queryset = xszst.objects.filter(科目名称__contains=r'专项储备\安全投入')
             df = read_frame(queryset)
 
             #本月
@@ -113,6 +113,11 @@ class PivoltTableView_aqfy(APIView):
 
             #累计
             df = df[(df['月'] >= begin) * (df['月'] <= end)]
+            dfn = df[df['年'] ==2023 ]
+            dfn=dfn[['年','月','凭证号','科目名称','安全环保投入类型','摘要','借方']].to_dict(orient='records')
+            print('安全费用明细：',dfn)
+            # 累计
+
             pivolt_table = df.pivot_table(
                 index=['安全环保投入类型'],
                 columns='年',
@@ -141,7 +146,7 @@ class PivoltTableView_aqfy(APIView):
 
             pivolt_data = pivolt_data.to_dict(orient='records')
 
-            return Response(pivolt_data)
+            return Response((pivolt_data,dfn))
 
     # filterset_fields = ['author__username', 'title']
 

@@ -58,13 +58,15 @@ INSTALLED_APPS = [
     'user_info',
     'comment',
     'store',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    #'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -98,11 +100,11 @@ WSGI_APPLICATION = 'drf_vue_blog.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "myxsz",
+        "NAME": "我的数据库",
         "USER": "root",
         "PASSWORD": "Hwh253922804*",
         "HOST": "localhost",
-        "PORT": "3306",
+        "PORT": "33061",
         "options":{"charset":"utf8mb4","collation":"utf8mb4_unicode_ci"},
     }
 }
@@ -169,3 +171,32 @@ SIMPLE_JWT = {
 
 MEDIA_URL =  'http://127.0.0.1:8081/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CSRF_TRUSTED_ORIGINS=['http://www.huanzai888.cn','http://www.huanzai888.cn:9526','http://43.139.42.6','http://43.139.42.6:9526','http://127.0.0.1:9526','http://127.0.0.1:8000']
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST =('http://www.huanzai888.cn','http://www.huanzai888.cn:9526','http://43.139.42.6','http://43.139.42.6:9526','http://127.0.0.1:9526')
+# 设置允许的HTTP请求方式，如GET，POST
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
+)
+
+# 设置非标准的HTTP请求头
+CORS_ALLOW_HEADERS = (
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)

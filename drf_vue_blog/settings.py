@@ -100,11 +100,11 @@ WSGI_APPLICATION = 'drf_vue_blog.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "我的数据库",
+        "NAME": "myxsz",
         "USER": "root",
         "PASSWORD": "Hwh253922804*",
         "HOST": "localhost",
-        "PORT": "33061",
+        "PORT": "3306",
         "options":{"charset":"utf8mb4","collation":"utf8mb4_unicode_ci"},
     }
 }

@@ -1,5 +1,7 @@
 import datetime
 
+import pandas
+
 from article_xsz.models import xszst
 
 from article_xsz.permissions import IsAdminUserOrReadOnly
@@ -45,7 +47,7 @@ class PivoltTableView(APIView):
     def get(self,request):
 
         begin=self.request.query_params.get('begin')
-        print(begin)
+
 
         if begin:
             begin = int(begin)
@@ -67,23 +69,44 @@ class PivoltTableView(APIView):
 
         df['费用'] = df['费用'].str.extract(r'/(.*)$')
         df['费用'] = df['费用'].str.replace(r'-.*','',regex=True)
+        df['费用'] = df['费用'].str.replace(r'.*宣传.*', '宣传费', regex=True)
         #df=df[(df['借方']>0)+(df['借方']<0)]
         df=df[(df['月']>=begin)*(df['月']<=end)]
+        dfm=df[['年','月','凭证号','科目名称','新部门','费用','摘要','借方']]
+        dfm=dfm.loc[(dfm['借方']!=0)].to_dict(orient='records')
+
         pivolt_table=df.pivot_table(
             index=['费用'],
+
             columns='年',
 
             values='借方',
             aggfunc='sum',
         )
+        oder=['办公费','电话费','资料费','会务费','业务招待费','协调费','差旅费（国内）','差旅费（国外）','车辆使用费','低值易耗品摊销','聘请中介机构费','社会团体费','物业管理费','股改上市费','技术咨询（服务）费','网络信息费','诉讼费','宣传费']
+        o2=[]
+
+        for i in oder:
+
+            if i in pivolt_table.index:
+                o2.append(i)
+
+
+        pivolt_table=pivolt_table.loc[o2]
+        pivolt_table=pivolt_table
+
         pivolt_data=pivolt_table.reset_index().fillna(0)
+        pivolt_data.loc['合计']=pivolt_data.sum()
+        pivolt_data.loc['合计','费用']='合计'
 
 
 
 
-        pivolt_data =pivolt_data.to_dict(orient='records')
+        pivolt_data =pivolt_data.round(2).to_dict(orient='records')
+        print(pivolt_data)
+        print(dfm)
 
-        return Response(pivolt_data)
+        return Response((pivolt_data,dfm))
 
 class PivoltTableView_aqfy(APIView):
         permission_classes = [IsAdminUserOrReadOnly]
@@ -126,6 +149,12 @@ class PivoltTableView_aqfy(APIView):
                 aggfunc='sum',
             )
             #累计透视表
+            col_order=['安全设施及特种设备检测检验支出','安全生产宣传、教育、培训支出','开展重大危险源和事故隐患评估、监控和整改支出','配备和更新现场作业人员安全防护用品支出','其他与安全生产直接相关的支出','完善、改造和维护安全防护设施设备支出','安全生产检查、评价、咨询和标准化建设支出','配备、维护、保养应急救援器材、设备支出和应急演练应急支出','安全生产适用的新技术、新标准、新工艺、新装备的推广、应用支出','消防救援相关支出']
+            od=[]
+            for i in col_order:
+                if i in pivolt_table.index:
+                    od.append(i)
+            pivolt_table=pivolt_table.loc[od]
             pivolt_data = pivolt_table.reset_index().fillna(0)
             #本月透视表
             pivolt_table_by = dfby.pivot_table(
@@ -139,12 +168,16 @@ class PivoltTableView_aqfy(APIView):
             print(pivolt_data_by)
 
             pivolt_data=pivolt_data.join(other=pivolt_data_by,how='left',lsuffix='',rsuffix='_R').fillna(0)
-            print(pivolt_data)
+
 
             pivolt_data=pivolt_data.rename(columns={"借方":str(end)}).drop('安全环保投入类型_R',axis=1)
+            pivolt_data.loc['合计'] = pivolt_data.sum()
+            pivolt_data.loc['合计', '安全环保投入类型'] = '合计'
 
+            print(pivolt_data)
 
-            pivolt_data = pivolt_data.to_dict(orient='records')
+            pivolt_data = pivolt_data.round(2).to_dict(orient='records')
+
 
             return Response((pivolt_data,dfn))
 

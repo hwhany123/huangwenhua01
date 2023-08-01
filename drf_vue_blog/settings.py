@@ -16,6 +16,7 @@ from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print("kuhuh",BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,7 +29,7 @@ SECRET_KEY = '-1(gw4h!_=o2@@-3-p9jj62y=9k#*^3(5*!i-$yhblsckxw!=1'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static_static')
 
 
@@ -77,7 +78,7 @@ ROOT_URLCONF = 'drf_vue_blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, "templates")]
         ,
         'APP_DIRS': True,
         'OPTIONS': {

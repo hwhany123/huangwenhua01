@@ -113,3 +113,37 @@ class xszst(models.Model):
         # return self.title 将文章标题返回
         return str(self.id)
 
+class ys(models.Model):
+
+    序号 = models.FloatField(blank=True, null=True, db_column='序号')
+    年 = models.FloatField(blank=True, null=True, db_column='年')
+    费用项目 = models.FloatField(blank=True, null=True, db_column='费用项目')
+    类别 = models.FloatField(blank=True, null=True, db_column='类别')
+    总额不含税 = models.FloatField(blank=True, null=True, db_column='总额（不含税）')
+    其中传统口径 = models.FloatField(blank=True, null=True, db_column='其中：传统口径')
+    其中用于安全生产 = models.FloatField(blank=True, null=True, db_column='其中：用于安全生产')
+    其中用于环境保护 = models.FloatField(blank=True, null=True, db_column='其中：用于环境保护')
+    其中研发项目 = models.FloatField(blank=True, null=True, db_column='其中：研发项目')
+    其中工程项目资本化 = models.FloatField(blank=True, null=True, db_column='其中：工程项目（资本化）')
+    其中农化服务费 = models.FloatField(blank=True, null=True, db_column='其中：农化服务费')
+    其中用于知识产权的 = models.FloatField(blank=True, null=True, db_column='其中：用于知识产权的')
+    其中用于法治的 = models.FloatField(blank=True, null=True, db_column='其中：用于法治的')
+    总额不含税追加 = models.FloatField(blank=True, null=True, db_column='总额（不含税）-追加')
+    其中传统口径追加 = models.FloatField(blank=True, null=True, db_column='其中：传统口径-追加')
+    其中用于安全生产追加 = models.FloatField(blank=True, null=True, db_column='其中：用于安全生产-追加')
+    其中用于环境保护追加 = models.FloatField(blank=True, null=True, db_column='其中：用于环境保护-追加')
+    其中研发项目追加 = models.FloatField(blank=True, null=True, db_column='其中：研发项目-追加')
+    其中工程项目资本化追加 = models.FloatField(blank=True, null=True, db_column='其中：工程项目（资本化）-追加')
+    其中农化服务费追加 = models.FloatField(blank=True, null=True, db_column='其中：农化服务费-追加')
+    其中用于知识产权的追加 = models.FloatField(blank=True, null=True, db_column='其中：用于知识产权的-追加')
+    其中用于法治的追加 = models.FloatField(blank=True, null=True, db_column='其中：用于法治的-追加')
+
+    class Meta:
+        managed = False
+
+        db_table = '2023年行政费用预算表'
+
+    def __str__(self):
+        # return self.title 将文章标题返回
+        return str(self.id)
+

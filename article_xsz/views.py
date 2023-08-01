@@ -3,6 +3,7 @@ import datetime
 import pandas
 
 from article_xsz.models import xszst
+from article_xsz.models import ys
 
 from article_xsz.permissions import IsAdminUserOrReadOnly
 from rest_framework import viewsets
@@ -64,15 +65,17 @@ class PivoltTableView(APIView):
 
 
 
-        queryset = xszst.objects.filter(科目名称__contains='行政费用').exclude(科目名称__contains='研发支出')
+        queryset = xszst.objects.filter(科目名称__contains='行政费用').exclude(科目名称__contains='研发费用')
         df=read_frame(queryset)
+
 
         df['费用'] = df['费用'].str.extract(r'/(.*)$')
         df['费用'] = df['费用'].str.replace(r'-.*','',regex=True)
         df['费用'] = df['费用'].str.replace(r'.*宣传.*', '宣传费', regex=True)
         #df=df[(df['借方']>0)+(df['借方']<0)]
         df=df[(df['月']>=begin)*(df['月']<=end)]
-        dfm=df[['年','月','凭证号','科目名称','新部门','费用','摘要','借方']]
+        dfm=df[['年','月','凭证号','科目名称','新部门','费用','摘要','借方']].fillna(0)
+        print("dfm",dfm)
         dfm=dfm.loc[(dfm['借方']!=0)].to_dict(orient='records')
 
         pivolt_table=df.pivot_table(
@@ -99,12 +102,93 @@ class PivoltTableView(APIView):
         pivolt_data.loc['合计']=pivolt_data.sum()
         pivolt_data.loc['合计','费用']='合计'
 
-
-
-
+        pivolt_data = pivolt_data.fillna(0)
+       # print(pivolt_data)
         pivolt_data =pivolt_data.round(2).to_dict(orient='records')
-        print(pivolt_data)
-        print(dfm)
+
+        #print(dfm)
+
+        return Response((pivolt_data,dfm))
+
+class PivoltTableView_ys(APIView):
+    permission_classes = [IsAdminUserOrReadOnly]
+    def get(self,request):
+
+        year=self.request.query_params.get('year')
+
+
+        if year:
+            year = int(year)
+        else:
+            year =int(datetime.datetime.today().year)
+        month = self.request.query_params.get('month')
+        if month:
+            month = int(month)
+        else:
+            month = int(datetime.datetime.today().month)
+
+        print(year,month)
+
+
+
+
+        queryset = xszst.objects.filter(科目名称__contains='行政费用').exclude(科目名称__contains='研发费用')
+        queryset2 = ys.objects.all()
+
+        df_ys=read_frame(queryset2).fillna(0)
+        df_ys=df_ys[df_ys['年']==year]
+        df_ys=df_ys[['费用项目','总额不含税']].set_index('费用项目')
+        print(df_ys)
+        df=read_frame(queryset)
+
+
+        df['费用'] = df['费用'].str.extract(r'/(.*)$')
+        df['费用'] = df['费用'].str.replace(r'-.*','',regex=True)
+        df['费用'] = df['费用'].str.replace(r'.*宣传.*', '宣传费', regex=True)
+        #df=df[(df['借方']>0)+(df['借方']<0)]
+        df=df[(df['年']==year)*(df['月']<=month)]
+        dfm=df[['年','月','凭证号','科目名称','新部门','费用','摘要','借方']].fillna(0)
+        print("dfm",dfm)
+        dfm=dfm.loc[(dfm['借方']!=0)].to_dict(orient='records')
+
+        pivolt_table=df.pivot_table(
+            index=['费用'],
+
+
+
+            values='借方',
+            aggfunc='sum',
+        )
+        oder=['办公费','电话费','资料费','会务费','业务招待费','协调费','差旅费（国内）','差旅费（国外）','车辆使用费','低值易耗品摊销','聘请中介机构费','社会团体费','物业管理费','股改上市费','技术咨询（服务）费','网络信息费','诉讼费','宣传费']
+        o2=[]
+
+        for i in oder:
+
+            if i in pivolt_table.index:
+                o2.append(i)
+
+
+        pivolt_table=pivolt_table.loc[o2]
+        pivolt_table=pivolt_table
+
+        pivolt_data=pivolt_table.reset_index().fillna(0)
+        pivolt_data.loc['合计']=pivolt_data.sum()
+        pivolt_data.loc['合计','费用']='合计'
+
+        pivolt_data = pivolt_data.fillna(0)
+        pivolt_data9=pivolt_data.set_index('费用')
+        df_ys = df_ys.join(other=pivolt_data9, how='left', lsuffix='', rsuffix='_R').reset_index().fillna(0)
+        df_ys['进度预算']=((month/12)*df_ys['总额不含税']).round(2)
+        df_ys['剩余进度预算']=df_ys['进度预算']-df_ys['借方']
+        df_ys['剩余总进度预算'] = df_ys['总额不含税'] - df_ys['借方']
+        df_ys=df_ys.rename(columns={"总额不含税":"全年总预算"})
+
+        df_ys.loc['合计']=df_ys.sum()
+        print(df_ys)
+       # print(pivolt_data)
+        pivolt_data =df_ys.round(2).to_dict(orient='records')
+
+        #print(dfm)
 
         return Response((pivolt_data,dfm))
 
@@ -155,7 +239,7 @@ class PivoltTableView_aqfy(APIView):
                 if i in pivolt_table.index:
                     od.append(i)
             pivolt_table=pivolt_table.loc[od]
-            pivolt_data = pivolt_table.reset_index().fillna(0)
+            pivolt_data = pivolt_table.fillna(0)
             #本月透视表
             pivolt_table_by = dfby.pivot_table(
                 index=['安全环保投入类型'],
@@ -164,17 +248,17 @@ class PivoltTableView_aqfy(APIView):
                 values='借方',
                 aggfunc='sum',
             )
-            pivolt_data_by = pivolt_table_by.reset_index().fillna(0)
+            pivolt_data_by = pivolt_table_by.fillna(0)
             print(pivolt_data_by)
 
-            pivolt_data=pivolt_data.join(other=pivolt_data_by,how='left',lsuffix='',rsuffix='_R').fillna(0)
+            pivolt_data=pivolt_data.join(other=pivolt_data_by,how='left',lsuffix='',rsuffix='_R').reset_index().fillna(0)
+            print(pivolt_data)
 
-
-            pivolt_data=pivolt_data.rename(columns={"借方":str(end)}).drop('安全环保投入类型_R',axis=1)
+            pivolt_data=pivolt_data.rename(columns={"借方":str(end)})
             pivolt_data.loc['合计'] = pivolt_data.sum()
             pivolt_data.loc['合计', '安全环保投入类型'] = '合计'
 
-            print(pivolt_data)
+
 
             pivolt_data = pivolt_data.round(2).to_dict(orient='records')
 

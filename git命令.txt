@@ -1,4 +1,5 @@
 gunicorn drf_vue_blog.wsgi:application -w 2 -k gthread -b 127.0.0.1:8000
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 git submodule add git@github.com:hwhany123/vue-admin-template.git vue-admin-template 添加子模块
 git submodule add git@github.com:hwhany123/vant-demo.git vant-demo
 git rm --cached vue-admin-template #If you added this path by mistake, you can remove it
@@ -15,7 +16,7 @@ git push -u origin main
 
 git branch 查看分支
 git branch -d "分支名" 删除分支
-git checkout “分支名” 转换到分支“分支名”
+git checkout "分支名" 转换到分支“分支名”
 git checkout -b “分支名”  新建并转换到新分支“分支名”
 git push -u origin main
 git clone git@github.com:hwhany123/huangwenhua01.git --recursive

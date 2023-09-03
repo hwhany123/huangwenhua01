@@ -65,7 +65,7 @@ class PivoltTableView(APIView):
 
 
 
-        queryset = xszst.objects.filter(科目名称__contains='行政费用').exclude(科目名称__contains='研发费用')
+        queryset = xszst.objects.filter(科目名称__contains='行政费用').exclude(科目名称__contains='研发费用').exclude(科目名称__contains='环保投入')
         df=read_frame(queryset)
 
 
@@ -132,7 +132,7 @@ class PivoltTableView_ys(APIView):
 
 
 
-        queryset = xszst.objects.filter(科目名称__contains='行政费用').exclude(科目名称__contains='研发费用')
+        queryset = xszst.objects.filter(科目名称__contains='行政费用').exclude(科目名称__contains='研发费用').exclude(科目名称__contains='环保投入')
         queryset2 = ys.objects.all()
 
         df_ys=read_frame(queryset2).fillna(0)

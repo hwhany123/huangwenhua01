@@ -30,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static_static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend/dist/"),
@@ -101,10 +101,10 @@ WSGI_APPLICATION = 'drf_vue_blog.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "我的数据库",
-        "USER": "huangwenhua",
-        "PASSWORD": "Hwh253922804*",
-        "HOST": "localhost",
+        "NAME": "drf_vue_blog",
+        "USER": "root",
+        "PASSWORD": "hwh253922804",
+        "HOST": "db",
         "PORT": "3306",
         "options":{"charset":"utf8mb4","collation":"utf8mb4_unicode_ci"},
     }

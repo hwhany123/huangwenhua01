@@ -22,3 +22,4 @@ pytz
 six
 sqlparse
 tzdata
+gunicorn

@@ -23,6 +23,7 @@ git clone git@github.com:hwhany123/vant-demo.git
 ssh-keygen -t rsa -C "youremail@example.com"
 git log --gret "关键字" #按关键字查找提交记录
 git reset --hard "版本存储地址索引号" #切换到指定版本
+sudo git reset --soft HEAD^
 python manage.py collectstatic
 python manage.py makemigrations
 python manage.py migrate

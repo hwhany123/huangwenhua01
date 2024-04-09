@@ -170,34 +170,10 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-MEDIA_URL =  'http://127.0.0.1:8081/media/'
+MEDIA_URL =  '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-CSRF_TRUSTED_ORIGINS=['http://www.huanzai888.cn','http://www.huanzai888.cn:9526','http://43.139.42.6','http://43.139.42.6:9526','http://127.0.0.1:9526','http://127.0.0.1:8000']
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST =('http://www.huanzai888.cn','http://www.huanzai888.cn:9526','http://43.139.42.6','http://43.139.42.6:9526','http://127.0.0.1:9526')
-# 设置允许的HTTP请求方式，如GET，POST
-CORS_ALLOW_METHODS = (
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-    'VIEW',
-)
+CORS_ORIGIN_ALLOW_ALL = True
+#CORS_ORIGIN_WHITELIST =('http://www.huanzai888.cn','http://www.huanzai888.cn:9526','http://43.139.42.6','http://43.139.42.6:9526','http://127.0.0.1:9526','http://app:8000','http://app')
 
-# 设置非标准的HTTP请求头
-CORS_ALLOW_HEADERS = (
-    'XMLHttpRequest',
-    'X_FILENAME',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-)

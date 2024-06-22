@@ -115,16 +115,25 @@
 
     .login {
         text-align: right;
-        padding-right: 5px;
+        padding-right: 100px;
     }
 
     #header {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 50px;
+		width: 100%;
         text-align: center;
-        margin-top: 20px;
+		
+		
     }
 
     .grid {
         display: grid;
         grid-template-columns: 1fr 4fr 1fr;
+		padding-right: 5%;
+		background-color:#f1f1f1;
+		
     }
 </style>

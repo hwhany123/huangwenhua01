@@ -1,27 +1,44 @@
 <template>
+    
 
-    <BlogHeader/>
+    
+    <el-container>
+        <el-header>
+            <BlogHeader/>
+        </el-header>
+        <el-container>
+                <el-aside>
+                    <ElSide/>
+                </el-aside>
+                <el-main>
+                    <div v-if="article !== null" class="grid-container">
+						<div>
+                        <h1 id="title">{{ article.title }}</h1>
+                        <p id="subtitle">
+                            本文由 {{ article.author.username }} 发布于 {{ formatted_time(article.created) }}
+                            <span v-if="isSuperuser">
+                                <router-link :to="{ name: 'ArticleEdit', params: { id: article.id }}">更新与删除</router-link>
+                            </span>
+                        </p>
+                        <div v-html="article.body_html" class="article-body"></div>
+						</div>
+                            
+                        <div>
+                            <h3>目录</h3>
+                            <div v-html="article.toc_html" class="toc"></div>
+                        </div>
+                    </div>
+                    <Comments :article="article" />
+                </el-main>
+                
+            </el-container>
+        
+            <el-footer>
+                <BlogFooter/>
+            </el-footer>
+    </el-container>
 
-    <div v-if="article !== null" class="grid-container">
-        <div>
-            <h1 id="title">{{ article.title }}</h1>
-            <p id="subtitle">
-                本文由 {{ article.author.username }} 发布于 {{ formatted_time(article.created) }}
-                <span v-if="isSuperuser">
-                    <router-link :to="{ name: 'ArticleEdit', params: { id: article.id }}">更新与删除</router-link>
-                </span>
-            </p>
-            <div v-html="article.body_html" class="article-body"></div>
-        </div>
-        <div>
-            <h3>目录</h3>
-            <div v-html="article.toc_html" class="toc"></div>
-        </div>
-    </div>
-
-    <Comments :article="article" />
-
-    <BlogFooter/>
+    
 
 </template>
 
@@ -29,13 +46,14 @@
     import BlogHeader from '@/components/BlogHeader.vue'
     import BlogFooter from '@/components/BlogFooter.vue'
     import Comments from '@/components/Comments.vue'
+    import ElSide from '@/components/ElSide.vue'
 
     import axios from 'axios';
 
 
     export default {
         name: 'ArticleDetail',
-        components: {BlogHeader, BlogFooter, Comments},
+        components: {BlogHeader, BlogFooter, Comments,ElSide},
         data: function () {
             return {
                 article: null
@@ -64,6 +82,9 @@
     .grid-container {
         display: grid;
         grid-template-columns: 3fr 1fr;
+		
+		
+        
     }
 
 
@@ -73,7 +94,9 @@
     }
 
     #subtitle {
+		margin-top: 50px;
         text-align: center;
+		
         color: gray;
         font-size: small;
     }
@@ -83,6 +106,7 @@
 <style>
     .article-body p img {
         max-width: 100%;
+		left: 0;
         border-radius: 50px;
         box-shadow: gray 0 0 20px;
     }

@@ -211,13 +211,13 @@
 
 <style scoped>
     .image {
-        width: 180px;
+        width: 5%;
         border-radius: 10px;
         box-shadow: darkslategrey 0 0 12px;
     }
 
     .image-container {
-        width: 200px;
+        width: 5%;
     }
 
     .grid {
